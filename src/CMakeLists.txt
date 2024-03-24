@@ -10,3 +10,4 @@ add_library(pexchangeLib STATIC
 )
 
 target_link_libraries(pexchange pexchangeLib)
+target_include_directories(pexchangeLib PUBLIC .)

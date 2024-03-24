@@ -17,7 +17,7 @@ namespace pex {
 		while(newOrderCopy.sz > 0 && !asks_.empty())
 		{
 			auto& asksFront = *asks_.begin();
-			if(newOrderCopy.px > asksFront.px)
+			if(newOrderCopy.px >= asksFront.px)
 			{
 				if(asksFront.remains() > newOrderCopy.remains())
 				{
@@ -33,11 +33,8 @@ namespace pex {
 					asks_.erase(asks_.begin());
 				}
 			}
-			else
-			{
-				bids_.insert(newOrderCopy);
-			}
 		}
+		bids_.insert(newOrderCopy);
 	}
 	void Room::addAsk(const Order& newOrder)
 	{
@@ -45,7 +42,7 @@ namespace pex {
 		while(newOrderCopy.sz > 0 && !bids_.empty())
 		{
 			auto& bidsFront = *bids_.begin();
-			if(newOrderCopy.px < bidsFront.px)
+			if(newOrderCopy.px <= bidsFront.px)
 			{
 				if(bidsFront.remains() > newOrderCopy.remains())
 				{
@@ -61,11 +58,8 @@ namespace pex {
 					bids_.erase(bids_.begin());
 				}
 			}
-			else
-			{
-				asks_.insert(newOrderCopy);
-			}
 		}
+		asks_.insert(newOrderCopy);
 	}
 	void Room::deleteBid(const OrderId& id)
 	{
