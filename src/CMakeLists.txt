@@ -1,0 +1,12 @@
+
+
+
+add_library(pexchangeLib STATIC
+        Exchange.cpp
+        Room.cpp
+        Order.cpp
+        Decimal.h
+        Types.h
+)
+
+target_link_libraries(pexchange pexchangeLib)

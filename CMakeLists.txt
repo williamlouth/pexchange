@@ -4,3 +4,5 @@ project(pexchange)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(pexchange main.cpp)
+
+add_subdirectory(src)
