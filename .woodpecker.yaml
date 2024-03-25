@@ -10,4 +10,5 @@ steps:
     image: local/project-image
     commands:
       - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -G Ninja -S . -B cmake-build-debug
+      - cd cmake-build-debug
       - ninja -j4
