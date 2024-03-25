@@ -186,7 +186,3 @@ TEST_CASE("ShouldMatchBidAndAskWithLeftOver", "[Room]")
 		REQUIRE(executed == 2);
 	}
 }
-TEST_CASE("requireFail", "[Room]")
-{
-	REQUIRE(false);
-}
