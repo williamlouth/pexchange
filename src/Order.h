@@ -11,18 +11,29 @@
 namespace pex {
 
 
-struct Order {
+class Order {
+public:
 	OrderId id;
 	TimePoint timeStamp;
 	Decimal px;
 	Decimal sz;
 	Decimal filled;
-	bool isBid;
 
-	Decimal remains() const;
+	[[nodiscard]] Decimal remains() const;
+};
 
-	bool operator<(const Order& other) const;
+class Bid : public Order
+{
+public:
+	Bid(const OrderId& id, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
+	bool operator<(const Bid& other) const;
+};
 
+class Ask : public Order
+{
+public:
+	Ask(const OrderId& id, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
+	bool operator<(const Ask& other) const;
 };
 
 } // pex

@@ -7,14 +7,14 @@
 #include "Order.h"
 
 namespace pex {
-	Room::Room(const std::function<void(const Order& bid, const Order& ask, const Decimal& size)>& execute)
+	Room::Room(const std::function<void(const Bid& bid, const Ask& ask, const Decimal& size)>& execute)
 		: execute_{execute}
 	{
 	}
-	void Room::addBid(const Order& newOrder)
+	void Room::addBid(const Bid& newOrder)
 	{
 		auto newOrderCopy = newOrder;
-		while(newOrderCopy.sz > 0 && !asks_.empty())
+		while(newOrderCopy.remains() > 0 && !asks_.empty())
 		{
 			auto& asksFront = *asks_.begin();
 			if(newOrderCopy.px >= asksFront.px)
@@ -33,13 +33,17 @@ namespace pex {
 					asks_.erase(asks_.begin());
 				}
 			}
+			else
+			{
+				break;
+			}
 		}
 		bids_.insert(newOrderCopy);
 	}
-	void Room::addAsk(const Order& newOrder)
+	void Room::addAsk(const Ask& newOrder)
 	{
 		auto newOrderCopy = newOrder;
-		while(newOrderCopy.sz > 0 && !bids_.empty())
+		while(newOrderCopy.remains() > 0 && !bids_.empty())
 		{
 			auto& bidsFront = *bids_.begin();
 			if(newOrderCopy.px <= bidsFront.px)
@@ -57,6 +61,10 @@ namespace pex {
 					newOrderCopy.filled += bidsFront.remains();
 					bids_.erase(bids_.begin());
 				}
+			}
+			else
+			{
+				break;
 			}
 		}
 		asks_.insert(newOrderCopy);

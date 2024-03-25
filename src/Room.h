@@ -10,21 +10,22 @@
 #include "Types.h"
 
 namespace pex {
-	struct Order;
+	class Bid;
+	class Ask;
 
 	class Room {
     public:
-		explicit Room(const std::function<void(const Order& bid, const Order& ask, const Decimal& size)>& execute);
+		explicit Room(const std::function<void(const Bid& bid, const Ask& ask, const Decimal& size)>& execute);
 
-		void addBid(const Order& newOrder);
-		void addAsk(const Order& newOrder);
+		void addBid(const Bid& newOrder);
+		void addAsk(const Ask& newOrder);
 		void deleteBid(const OrderId& id);
 		void deleteAsk(const OrderId& id);
 
     private:
-        std::set<Order> bids_;
-        std::set<Order> asks_;
-		std::function<void(const Order& bid, const Order& ask, const Decimal& size)> execute_;
+        std::set<Bid> bids_;
+        std::set<Ask> asks_;
+		std::function<void(const Bid& bid, const Ask& ask, const Decimal& size)> execute_;
 	};
 
 } // pex
