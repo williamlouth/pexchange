@@ -10,7 +10,7 @@
 TEST_CASE("ShouldMatchBidAndAsk", "[Room]")
 {
 	bool executed = false;
-	auto execute = [&executed](const pex::Order& bid, const pex::Order& ask, pex::Decimal size){executed = true;};
+	auto execute = [&executed](const pex::Order&, const pex::Order&, pex::Decimal){executed = true;};
 	pex::Room room{execute};
 
 	SECTION("bidFirst")
@@ -32,7 +32,7 @@ TEST_CASE("ShouldMatchFirstBidAndAsk", "[Room]")
 	bool executed = false;
 	pex::OrderId bidId{0};
 	pex::OrderId askId{0};
-	auto execute = [&executed,&bidId,&askId](const pex::Order& bid, const pex::Order& ask, pex::Decimal size)
+	auto execute = [&executed,&bidId,&askId](const pex::Order& bid, const pex::Order& ask, pex::Decimal)
 	{
 		executed = true;
 		bidId = bid.id;
@@ -62,7 +62,7 @@ TEST_CASE("ShouldMatchFirstBidAndAsk", "[Room]")
 TEST_CASE("ShouldNotMatchBidAndAsk", "[Room]")
 {
 	bool executed = false;
-	auto execute = [&executed](const pex::Order& bid, const pex::Order& ask, pex::Decimal size){executed = true;};
+	auto execute = [&executed](const pex::Order&, const pex::Order&, pex::Decimal){executed = true;};
 	pex::Room room{execute};
 
 	SECTION("bidFirst")
@@ -84,7 +84,7 @@ TEST_CASE("ShouldMatchBidAndAskInTimeOrder", "[Room]")
 	bool executed = false;
 	pex::OrderId bidId{0};
 	pex::OrderId askId{0};
-	auto execute = [&executed,&bidId,&askId](const pex::Order& bid, const pex::Order& ask, pex::Decimal size)
+	auto execute = [&executed,&bidId,&askId](const pex::Order& bid, const pex::Order& ask, pex::Decimal)
 	{
 		executed = true;
 		bidId = bid.id;
@@ -115,7 +115,7 @@ TEST_CASE("ShouldMatchPartBidAndAsk", "[Room]")
 	bool executed = false;
 	pex::OrderId bidId{0};
 	pex::OrderId askId{0};
-	auto execute = [&executed,&bidId,&askId](const pex::Order& bid, const pex::Order& ask, pex::Decimal size)
+	auto execute = [&executed,&bidId,&askId](const pex::Order&, const pex::Order&, pex::Decimal)
 	{
 		executed = true;
 	};
@@ -138,7 +138,7 @@ TEST_CASE("ShouldMatchPartBidAndAsk", "[Room]")
 TEST_CASE("ShouldMatch2BidAndAsk", "[Room]")
 {
 	int executed = 0;
-	auto execute = [&executed](const pex::Order& bid, const pex::Order& ask, pex::Decimal size)
+	auto execute = [&executed](const pex::Order&, const pex::Order&, pex::Decimal)
 	{
 		executed++;
 	};
@@ -163,7 +163,7 @@ TEST_CASE("ShouldMatch2BidAndAsk", "[Room]")
 TEST_CASE("ShouldMatchBidAndAskWithLeftOver", "[Room]")
 {
 	int executed = 0;
-	auto execute = [&executed](const pex::Order& bid, const pex::Order& ask, pex::Decimal size)
+	auto execute = [&executed](const pex::Order&, const pex::Order&, pex::Decimal)
 	{
 		executed++;
 	};

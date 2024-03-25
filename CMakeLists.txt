@@ -7,5 +7,6 @@ add_subdirectory(external)
 
 add_executable(pexchange main.cpp)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -g")
 add_subdirectory(src)
 add_subdirectory(test)
