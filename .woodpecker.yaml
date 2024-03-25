@@ -1,5 +1,12 @@
 steps:
+  - name: build-image
+    image: docker
+    commands:
+      - docker build --rm -t local/project-image .
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   - name: build
-    image: ubuntu
+    image: local/project-image
     commands:
       - echo test
