@@ -5,6 +5,9 @@ steps:
       - docker build --rm -t local/project-image .
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      - branch: main
+        event: push
 
   - name: build
     image: local/project-image
@@ -12,8 +15,14 @@ steps:
       - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -G Ninja -S . -B cmake-build-debug
       - cd cmake-build-debug
       - ninja -j4
+    when:
+      - branch: main
+        event: push
 
   - name: UnitTest
     image: local/project-image
     commands:
       -  ./cmake-build-debug/test/UnitTests/UnitTests
+    when:
+      - branch: main
+        event: push
