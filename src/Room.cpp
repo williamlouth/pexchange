@@ -7,8 +7,8 @@
 #include "Order.h"
 
 namespace pex {
-	Room::Room(const std::function<void(const Bid& bid, const Ask& ask, const Decimal& size)>& execute)
-		: execute_{execute}
+	Room::Room(std::function<void(const Bid& bid, const Ask& ask, const Decimal& size)> execute)
+		: execute_{std::move(execute)}
 	{
 	}
 	void Room::addBid(const Bid& newOrder)

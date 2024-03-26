@@ -15,7 +15,7 @@ namespace pex {
 
 	class Room {
     public:
-		explicit Room(const std::function<void(const Bid& bid, const Ask& ask, const Decimal& size)>& execute);
+		explicit Room(std::function<void(const Bid& bid, const Ask& ask, const Decimal& size)> execute);
 
 		void addBid(const Bid& newOrder);
 		void addAsk(const Ask& newOrder);

@@ -3,13 +3,24 @@
 //
 
 #pragma once
+#include <map>
+
+#include "Decimal.h"
+#include "Types.h"
 
 namespace pex {
+	class Bid;
+	class Ask;
+	class Room;
 
-class Exchange {
+	class Exchange {
     public:
-    private:
 
+		void addRoom(const RoomId& roomId);
+    private:
+		void execute(const Bid& bid, const Ask& ask, const Decimal& size);
+
+        std::map<RoomId,Room> rooms_;
 };
 
 } // pex

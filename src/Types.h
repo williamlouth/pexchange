@@ -9,5 +9,6 @@
 namespace pex
 {
 	typedef uint64_t OrderId;
+	typedef std::string RoomId;
 	typedef std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> TimePoint;
 }
