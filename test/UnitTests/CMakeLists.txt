@@ -1,7 +1,8 @@
 
 
 add_executable(UnitTests
-    RoomUnitTests.cpp
+        RoomUnitTests.cpp
+        UserUnitTests.cpp
 )
 
 
