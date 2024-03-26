@@ -7,6 +7,8 @@ add_library(pexchangeLib STATIC
         Order.cpp
         Decimal.h
         Types.h
+        UserManager.cpp
+        User.cpp
 )
 
 target_link_libraries(pexchange pexchangeLib)
