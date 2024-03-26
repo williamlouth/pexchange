@@ -12,7 +12,9 @@ namespace pex
 	Exchange::Exchange()
 		: userManager_{
 			[this](const RoomId& roomId, const Bid& bid) { this->addBid(roomId, bid); },
-			[this](const RoomId& roomId, const Ask& ask) { this->addAsk(roomId, ask); }
+			[this](const RoomId& roomId, const Ask& ask) { this->addAsk(roomId, ask); },
+			[this](const RoomId& roomId, const OrderId& id) { this->deleteBid(roomId, id); },
+			[this](const RoomId& roomId, const OrderId& id) { this->deleteAsk(roomId, id); }
 		}
 	{
 	}
@@ -35,6 +37,20 @@ namespace pex
 		if(auto itr = rooms_.find(roomId); itr != rooms_.end())
 		{
 			itr->second.addAsk(ask);
+		}
+	}
+	void Exchange::deleteBid(const RoomId& roomId, const OrderId& id)
+	{
+		if(auto itr = rooms_.find(roomId); itr != rooms_.end())
+		{
+			itr->second.deleteBid(id);
+		}
+	}
+	void Exchange::deleteAsk(const RoomId& roomId, const OrderId& id)
+	{
+		if(auto itr = rooms_.find(roomId); itr != rooms_.end())
+		{
+			itr->second.deleteAsk(id);
 		}
 	}
 } // pex

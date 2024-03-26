@@ -9,6 +9,8 @@ add_library(pexchangeLib STATIC
         Types.h
         UserManager.cpp
         User.cpp
+        OrderIdGenerator.cpp
+        UserOrder.cpp
 )
 
 target_link_libraries(pexchange pexchangeLib)
