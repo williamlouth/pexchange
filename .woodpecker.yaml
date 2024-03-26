@@ -20,7 +20,6 @@ steps:
       RECC_REMOTE_PLATFORM_OSFamily: linux
       RECC_REMOTE_PLATFORM_arch: x86_64
       RECC_PROJECT_ROOT: ../
-      RECC_VERBOSE: 1
     commands:
       - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -G Ninja -S . -B cmake-build-debug
       - cd cmake-build-debug
