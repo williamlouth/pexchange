@@ -17,8 +17,8 @@ steps:
       RECC_ACTION_CACHE_SERVER: 192.168.1.111:8980
       RECC_INSTANCE: fuse
       RECC_LINK: 1
-      RECC_REMOTE_PLATFORM_OSFAMILY: linux
-      RECC_REMOTE_PLATFORM_ARCH: x86_64
+      RECC_REMOTE_PLATFORM_OSFamily: linux
+      RECC_REMOTE_PLATFORM_arch: x86_64
     commands:
       - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -G Ninja -S . -B cmake-build-debug
       - cd cmake-build-debug
