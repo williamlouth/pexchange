@@ -29,7 +29,7 @@ namespace pex {
 	         const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk
 	    );
 
-	    void addOrder(const NewOrderSingle& newOrderSingle);
+	    std::string addOrder(const NewOrderSingle& newOrderSingle);
 	    void deleteOrder(const ClOrdId& clOrdId);
     private:
 		void createOrder(const NewOrderSingle& newOrderSingle);

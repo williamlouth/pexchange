@@ -22,6 +22,8 @@ namespace pex {
 					const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteBid,
 	                const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk );
 
+    	std::string newOrderSingle(const UserId&, const NewOrderSingle&);
+
     private:
 
 		std::function<void(const RoomId& roomId, const Bid& bid)> addBid_;

@@ -25,10 +25,11 @@ namespace pex
 		, orderIdGenerator_{orderIdGenerator}
 	{
 	}
-	void User::addOrder(const NewOrderSingle& newOrderSingle)
+	std::string User::addOrder(const NewOrderSingle& newOrderSingle)
 	{
 		createOrder(newOrderSingle);
 		//TODO: Run checks on NOS
+		return "Successfully placed order: " + newOrderSingle.clOrdId;
 	}
 	void User::deleteOrder(const ClOrdId& clOrdId)
 	{

@@ -19,4 +19,15 @@ namespace pex
 		, orderIdGenerator_{OrderId{0}} //TODO: load last value from database
 	{
 	}
+	std::string UserManager::newOrderSingle(const UserId& userId, const NewOrderSingle& newOrderSingle)
+	{
+		if(const auto user = users_.find(userId); user == users_.end())
+		{
+			return "Invalid User";
+		}
+		else
+		{
+			return user->second.addOrder(newOrderSingle);
+		}
+	}
 } // pex

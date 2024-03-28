@@ -55,8 +55,8 @@ namespace pex
 			itr->second.deleteAsk(id);
 		}
 	}
-	std::string Exchange::newOrderSingle(const UserId&, const NewOrderSingle&)
+	std::string Exchange::newOrderSingle(const UserId& user, const NewOrderSingle& newOrderSingle)
 	{
-		return "Not yet implemented NOS";
+		return userManager_.newOrderSingle(user, newOrderSingle);
 	}
 } // pex
