@@ -12,7 +12,8 @@ add_library(pexchangeLib STATIC
         OrderIdGenerator.cpp
         UserOrder.cpp
         Server.cpp
+        MessageParser.cpp
 )
 
 target_link_libraries(pexchange pexchangeLib)
-target_include_directories(pexchangeLib PUBLIC . ../external/websocketpp)
+target_include_directories(pexchangeLib PUBLIC . ../external/websocketpp ../external/json/include)

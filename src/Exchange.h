@@ -4,7 +4,10 @@
 
 #pragma once
 #include <map>
+#include <MessageParser.h>
+#include <Server.h>
 #include <UserManager.h>
+#include <nlohmann/json_fwd.hpp>
 
 #include "Decimal.h"
 #include "Types.h"
@@ -26,8 +29,12 @@ namespace pex {
 		void deleteBid(const RoomId& roomId, const OrderId& id);
 		void deleteAsk(const RoomId& roomId, const OrderId& id);
 
+		void onJsonMessage(const nlohmann::json& message);
+
         std::map<RoomId,Room> rooms_;
 		UserManager userManager_;
+		MessageParser messageParser_;
+		Server server_;
 };
 
 } // pex

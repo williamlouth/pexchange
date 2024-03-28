@@ -16,6 +16,8 @@ namespace pex
 			[this](const RoomId& roomId, const OrderId& id) { this->deleteBid(roomId, id); },
 			[this](const RoomId& roomId, const OrderId& id) { this->deleteAsk(roomId, id); }
 		}
+		, messageParser_{[this](const auto& message){onJsonMessage(message);}}
+		, server_{[this](const auto& message){messageParser_.onRawMessage(message);}}
 	{
 	}
 	void Exchange::addRoom(const RoomId& roomId)
@@ -52,5 +54,8 @@ namespace pex
 		{
 			itr->second.deleteAsk(id);
 		}
+	}
+	void Exchange::onJsonMessage(const nlohmann::json&)
+	{
 	}
 } // pex
