@@ -16,7 +16,7 @@ namespace pex
 			[this](const RoomId& roomId, const OrderId& id) { this->deleteBid(roomId, id); },
 			[this](const RoomId& roomId, const OrderId& id) { this->deleteAsk(roomId, id); }
 		}
-		, messageParser_{[this](const auto& message){onJsonMessage(message);}}
+		, messageParser_{[this](const auto& userId, const auto& nos){return newOrderSingle(userId, nos);}}
 		, server_{[this](const auto& message){messageParser_.onRawMessage(message);}}
 	{
 	}
@@ -55,7 +55,8 @@ namespace pex
 			itr->second.deleteAsk(id);
 		}
 	}
-	void Exchange::onJsonMessage(const nlohmann::json&)
+	std::string Exchange::newOrderSingle(const UserId&, const NewOrderSingle&)
 	{
+		return "Not yet implemented NOS";
 	}
 } // pex

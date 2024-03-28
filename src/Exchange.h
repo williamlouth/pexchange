@@ -29,7 +29,7 @@ namespace pex {
 		void deleteBid(const RoomId& roomId, const OrderId& id);
 		void deleteAsk(const RoomId& roomId, const OrderId& id);
 
-		void onJsonMessage(const nlohmann::json& message);
+		std::string newOrderSingle(const UserId& user, const NewOrderSingle& newOrderSingle);
 
         std::map<RoomId,Room> rooms_;
 		UserManager userManager_;
