@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_CXX_COMPILER_LAUNCHER /usr/local/bin/recc)
 
+include_directories(external/boost/include)
 add_subdirectory(external)
 
 add_executable(pexchange main.cpp)
