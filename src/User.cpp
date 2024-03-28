@@ -4,6 +4,7 @@
 
 #include "User.h"
 
+#include <NewOrderSingle.h>
 #include <OrderIdGenerator.h>
 #include <UserOrder.h>
 
@@ -24,13 +25,10 @@ namespace pex
 		, orderIdGenerator_{orderIdGenerator}
 	{
 	}
-	void User::addOrder(const ClOrdId& clOrdId,
-	                    const RoomId& roomId,
-	                    const TimePoint& timeStamp,
-	                    const Decimal& px,
-	                    const Decimal& sz)
+	void User::addOrder(const NewOrderSingle& newOrderSingle)
 	{
-		createOrder(clOrdId, roomId, timeStamp, px, sz);
+		createOrder(newOrderSingle);
+		//TODO: Run checks on NOS
 	}
 	void User::deleteOrder(const ClOrdId& clOrdId)
 	{
@@ -43,26 +41,22 @@ namespace pex
 			deleteAsk_(itr->second.roomId, itr->second.id);
 		}
 	}
-	void User::createOrder(const ClOrdId& clOrdId,
-	                       const RoomId& roomId,
-	                       const TimePoint& timeStamp,
-	                       const Decimal& px,
-	                       const Decimal& sz)
+	void User::createOrder(const NewOrderSingle& newOrderSingle)
 	{
 		const auto orderId = orderIdGenerator_.getNextOrderId();
-		if(sz > 0)
+		if(newOrderSingle.sz > 0)
 		{
-			const auto bid = Bid{orderId, timeStamp, px, sz};
-			const auto userOrder = UserOrder{orderId, timeStamp, px, sz, roomId};
-			bids_.insert({clOrdId,userOrder});
-			addBid_(roomId, bid);
+			const auto bid = Bid{orderId, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz};
+			const auto userOrder = UserOrder{orderId, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz, newOrderSingle.roomId};
+			bids_.insert({newOrderSingle.clOrdId,userOrder});
+			addBid_(newOrderSingle.roomId, bid);
 		}
 		else
 		{
-			const auto ask = Ask{orderId, timeStamp, px, -sz};
-			const auto userOrder = UserOrder{orderId, timeStamp, px, sz, roomId};
-			asks_.insert({clOrdId,userOrder});
-			addAsk_(roomId, ask);
+			const auto ask = Ask{orderId, newOrderSingle.timeStamp, newOrderSingle.px, -newOrderSingle.sz};
+			const auto userOrder = UserOrder{orderId, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz, newOrderSingle.roomId};
+			asks_.insert({newOrderSingle.clOrdId,userOrder});
+			addAsk_(newOrderSingle.roomId, ask);
 		}
 	}
 } // pex

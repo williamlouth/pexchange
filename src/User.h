@@ -11,6 +11,7 @@
 
 namespace pex
 {
+	struct NewOrderSingle;
 	class OrderIdGenerator;
 }
 
@@ -28,10 +29,10 @@ namespace pex {
 	         const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk
 	    );
 
-	    void addOrder(const ClOrdId& clOrdId, const RoomId& roomId, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
+	    void addOrder(const NewOrderSingle& newOrderSingle);
 	    void deleteOrder(const ClOrdId& clOrdId);
     private:
-		void createOrder(const ClOrdId& clOrdId, const RoomId& roomId, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
+		void createOrder(const NewOrderSingle& newOrderSingle);
 
 
 		std::function<void(const RoomId& roomId, const Bid& bid)> addBid_;
