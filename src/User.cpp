@@ -4,8 +4,8 @@
 
 #include "User.h"
 
-#include <CancelOrder.h>
-#include <NewOrderSingle.h>
+#include <Messages/CancelOrder.h>
+#include <Messages/NewOrderSingle.h>
 #include <OrderIdGenerator.h>
 #include <UserOrder.h>
 

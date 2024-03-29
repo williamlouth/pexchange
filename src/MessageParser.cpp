@@ -4,9 +4,8 @@
 
 #include "MessageParser.h"
 
-#include <CancelOrder.h>
-#include <iostream>
-#include <NewOrderSingle.h>
+#include <Messages/CancelOrder.h>
+#include <Messages/NewOrderSingle.h>
 #include <nlohmann/json.hpp>
 
 #include "Decimal.h"

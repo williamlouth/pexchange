@@ -13,8 +13,8 @@ add_library(pexchangeLib STATIC
         UserOrder.cpp
         Server.cpp
         MessageParser.cpp
-        NewOrderSingle.cpp
-        CancelOrder.cpp
+        Messages/NewOrderSingle.cpp
+        Messages/CancelOrder.cpp
 )
 
 target_link_libraries(pexchange pexchangeLib)
