@@ -130,6 +130,6 @@ namespace pex
 			userId = UserId{user->get<std::string>()};
 		}
 		connections_[connectionHandle] = userId;
-		return "Logon successful";
+		return "Logon successfull";
 	}
 } // pex

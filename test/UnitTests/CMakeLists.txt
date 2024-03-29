@@ -3,6 +3,7 @@
 add_executable(UnitTests
         RoomUnitTests.cpp
         UserUnitTests.cpp
+        MessageParserUnitTests.cpp
 )
 
 
