@@ -1,6 +1,7 @@
 //
 // Created by will on 26/03/24.
 //
+#include <CancelOrder.h>
 #include <NewOrderSingle.h>
 #include <OrderIdGenerator.h>
 #include <User.h>
@@ -45,8 +46,8 @@ TEST_CASE("ShouldDeleteBidAsk", "[Room]")
 	pex::User u{orderIdGen, emptyAddBid, emptyAddAsk, deleteBid, deleteAsk};
 	u.addOrder(pex::NewOrderSingle{0, "roomy", {}, pex::Decimal{100}, pex::Decimal{10}});
 	u.addOrder(pex::NewOrderSingle{1, "roomy", {}, pex::Decimal{110}, pex::Decimal{-10}});
-	u.deleteOrder(0);
+	u.deleteOrder(pex::CancelOrder{0});
 	REQUIRE(deletedBid);
-	u.deleteOrder(1);
+	u.deleteOrder(pex::CancelOrder{1});
 	REQUIRE(deletedAsk);
 }

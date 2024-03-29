@@ -4,6 +4,7 @@
 
 #include "MessageParser.h"
 
+#include <CancelOrder.h>
 #include <iostream>
 #include <NewOrderSingle.h>
 #include <nlohmann/json.hpp>
@@ -11,9 +12,12 @@
 #include "Decimal.h"
 #include "Types.h"
 
-namespace pex {
-	MessageParser::MessageParser(std::function<std::string(const UserId&,const NewOrderSingle&)> newOrderSingle)
+namespace pex
+{
+	MessageParser::MessageParser(std::function<std::string(const UserId&, const NewOrderSingle&)> newOrderSingle,
+	                             std::function<std::string(const UserId&, const CancelOrder&)> cancelOrder)
 		: newOrderSingle_{std::move(newOrderSingle)}
+		, cancelOrder_{std::move(cancelOrder)}
 	{
 	}
 	std::string MessageParser::onRawMessage(const std::string& rawMessage)
@@ -90,8 +94,17 @@ namespace pex {
 
 		return newOrderSingle_("user", NewOrderSingle{clOrdId, roomId, TimePoint{}, px, sz}); //TODO: sort out user and timepoint
 	}
-	std::string MessageParser::onCancelOrder(const nlohmann::json&)
+	std::string MessageParser::onCancelOrder(const nlohmann::json& message)
 	{
-		return "On Cancel Order Not Implemented";
+		ClOrdId clOrdId;
+		if(const auto clId = message.find("ClOrdId"); clId == message.end())
+		{
+			return "CancelOrder missing ClOrdId";
+		}
+		else
+		{
+			clOrdId = ClOrdId{clId->get<uint64_t>()};
+		}
+		return cancelOrder_("user", CancelOrder{clOrdId}); //TODO: sort out user
 	}
 } // pex

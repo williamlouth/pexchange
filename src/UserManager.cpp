@@ -30,4 +30,15 @@ namespace pex
 			return user->second.addOrder(newOrderSingle);
 		}
 	}
+	std::string UserManager::cancelOrder(const UserId& userId, const CancelOrder& cancelOrder)
+	{
+		if(const auto user = users_.find(userId); user == users_.end())
+		{
+			return "Invalid User";
+		}
+		else
+		{
+			return user->second.deleteOrder(cancelOrder);
+		}
+	}
 } // pex

@@ -15,9 +15,12 @@ namespace pex
 			[this](const RoomId& roomId, const Ask& ask) { this->addAsk(roomId, ask); },
 			[this](const RoomId& roomId, const OrderId& id) { this->deleteBid(roomId, id); },
 			[this](const RoomId& roomId, const OrderId& id) { this->deleteAsk(roomId, id); }
-		}
-		, messageParser_{[this](const auto& userId, const auto& nos){return newOrderSingle(userId, nos);}}
-		, server_{[this](const auto& message){messageParser_.onRawMessage(message);}}
+		  }
+		  , messageParser_{
+			  [this](const auto& userId, const auto& nos) { return newOrderSingle(userId, nos); },
+			  [this](const auto& userId, const auto& can) { return cancelOrder(userId, can); }
+		  }
+		  , server_{[this](const auto& message) { messageParser_.onRawMessage(message); }}
 	{
 	}
 	void Exchange::addRoom(const RoomId& roomId)
@@ -58,5 +61,9 @@ namespace pex
 	std::string Exchange::newOrderSingle(const UserId& user, const NewOrderSingle& newOrderSingle)
 	{
 		return userManager_.newOrderSingle(user, newOrderSingle);
+	}
+	std::string Exchange::cancelOrder(const UserId& user, const CancelOrder& cancelOrder)
+	{
+		return userManager_.cancelOrder(user, cancelOrder);
 	}
 } // pex

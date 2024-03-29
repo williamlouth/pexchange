@@ -12,6 +12,7 @@
 namespace pex
 {
 	struct NewOrderSingle;
+	struct CancelOrder;
 	class OrderIdGenerator;
 }
 
@@ -30,7 +31,7 @@ namespace pex {
 	    );
 
 	    std::string addOrder(const NewOrderSingle& newOrderSingle);
-	    void deleteOrder(const ClOrdId& clOrdId);
+	    std::string deleteOrder(const CancelOrder& clOrdId);
     private:
 		void createOrder(const NewOrderSingle& newOrderSingle);
 

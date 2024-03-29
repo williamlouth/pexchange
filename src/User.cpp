@@ -4,6 +4,7 @@
 
 #include "User.h"
 
+#include <CancelOrder.h>
 #include <NewOrderSingle.h>
 #include <OrderIdGenerator.h>
 #include <UserOrder.h>
@@ -31,15 +32,21 @@ namespace pex
 		//TODO: Run checks on NOS
 		return "Successfully placed order: " + newOrderSingle.clOrdId;
 	}
-	void User::deleteOrder(const ClOrdId& clOrdId)
+	std::string User::deleteOrder(const CancelOrder& cancelOrder)
 	{
-		if(auto itr = bids_.find(clOrdId); itr != bids_.end())
+		if(auto itr = bids_.find(cancelOrder.clOrdId); itr != bids_.end())
 		{
 			deleteBid_(itr->second.roomId, itr->second.id);
+			return "Successfully deleted order: " + cancelOrder.clOrdId;
 		}
-		else if(auto itr = asks_.find(clOrdId); itr != asks_.end())
+		else if(auto itr = asks_.find(cancelOrder.clOrdId); itr != asks_.end())
 		{
 			deleteAsk_(itr->second.roomId, itr->second.id);
+			return "Successfully deleted order: " + cancelOrder.clOrdId;
+		}
+		else
+		{
+			return "ClOrdId not found: " + cancelOrder.clOrdId;
 		}
 	}
 	void User::createOrder(const NewOrderSingle& newOrderSingle)

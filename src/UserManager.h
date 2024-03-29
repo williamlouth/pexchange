@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include <CancelOrder.h>
 #include <functional>
 #include <map>
 #include <OrderIdGenerator.h>
@@ -23,6 +24,7 @@ namespace pex {
 	                const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk );
 
     	std::string newOrderSingle(const UserId&, const NewOrderSingle&);
+	    std::string cancelOrder(const UserId& user, const CancelOrder& cancelOrder);
 
     private:
 

@@ -30,6 +30,7 @@ namespace pex {
 		void deleteAsk(const RoomId& roomId, const OrderId& id);
 
 		std::string newOrderSingle(const UserId& user, const NewOrderSingle& newOrderSingle);
+		std::string cancelOrder(const UserId& user, const CancelOrder& cancelOrder);
 
         std::map<RoomId,Room> rooms_;
 		UserManager userManager_;
