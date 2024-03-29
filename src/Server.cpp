@@ -5,7 +5,7 @@
 #include "Server.h"
 
 namespace pex {
-	Server::Server(std::function<void(const std::string&)> onStringMessage)
+	Server::Server(std::function<void(websocketpp::connection_hdl connectionHandle, const std::string&)> onStringMessage)
 		: onStringMessage_{onStringMessage}
 	{
 		try
@@ -30,8 +30,8 @@ namespace pex {
 		}
 	}
 
-	void Server::onMessage(websocketpp::connection_hdl, WebppServer::message_ptr messagePtr)
+	void Server::onMessage(websocketpp::connection_hdl connectionHandle, WebppServer::message_ptr messagePtr)
 	{
-		onStringMessage_(messagePtr->get_payload());
+		onStringMessage_(std::move(connectionHandle), messagePtr->get_payload());
 	}
 } // pex

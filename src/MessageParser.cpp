@@ -20,11 +20,11 @@ namespace pex
 		, cancelOrder_{std::move(cancelOrder)}
 	{
 	}
-	std::string MessageParser::onRawMessage(const std::string& rawMessage)
+	std::string MessageParser::onRawMessage(websocketpp::connection_hdl connectionHandle, const std::string& rawMessage)
 	{
 		try
 		{
-			return onJsonMessage(nlohmann::json::parse(rawMessage));
+			return onJsonMessage(connectionHandle, nlohmann::json::parse(rawMessage));
 		}
 		catch (nlohmann::json::parse_error const & e)
 		{
@@ -33,7 +33,7 @@ namespace pex
 		catch (...)
 		{	return "Unknown error";}
 	}
-	std::string MessageParser::onJsonMessage(const nlohmann::json& message)
+	std::string MessageParser::onJsonMessage(websocketpp::connection_hdl connectionHandle, const nlohmann::json& message)
 	{
 		if(const auto messageTypeItr = message.find("type"); messageTypeItr == message.end())
 		{
@@ -42,18 +42,30 @@ namespace pex
 		else
 		{
 			const auto messageType = messageTypeItr->get<std::string>();
-			if(messageType == "NewOrderSingle")
+			if (messageType == "LogOn")
 			{
-				return onNewOrderSingle(message);
+				return onLogOn(connectionHandle, message);
 			}
-			else if(messageType == "CancelOrder")
+
+			if (auto user = connections_.find(connectionHandle); user == connections_.end())
 			{
-				return onCancelOrder(message);
+				return "Not Logged In";
 			}
-			return "Unsupported message type: " + messageType;
+			else
+			{
+				if (messageType == "NewOrderSingle")
+				{
+					return onNewOrderSingle(user->second, message);
+				}
+				else if (messageType == "CancelOrder")
+				{
+					return onCancelOrder(user->second, message);
+				}
+				return "Unsupported message type: " + messageType;
+			}
 		}
 	}
-	std::string MessageParser::onNewOrderSingle(const nlohmann::json& message)
+	std::string MessageParser::onNewOrderSingle(const UserId& user, const nlohmann::json& message)
 	{
 		Decimal px;
 		Decimal sz;
@@ -92,9 +104,9 @@ namespace pex
 			clOrdId = ClOrdId{clId->get<uint64_t>()};
 		}
 
-		return newOrderSingle_("user", NewOrderSingle{clOrdId, roomId, TimePoint{}, px, sz}); //TODO: sort out user and timepoint
+		return newOrderSingle_(user, NewOrderSingle{clOrdId, roomId, TimePoint{}, px, sz}); //TODO: sort out timepoint
 	}
-	std::string MessageParser::onCancelOrder(const nlohmann::json& message)
+	std::string MessageParser::onCancelOrder(const UserId& user, const nlohmann::json& message)
 	{
 		ClOrdId clOrdId;
 		if(const auto clId = message.find("ClOrdId"); clId == message.end())
@@ -105,6 +117,20 @@ namespace pex
 		{
 			clOrdId = ClOrdId{clId->get<uint64_t>()};
 		}
-		return cancelOrder_("user", CancelOrder{clOrdId}); //TODO: sort out user
+		return cancelOrder_(user, CancelOrder{clOrdId});
+	}
+	std::string MessageParser::onLogOn(websocketpp::connection_hdl connectionHandle, const nlohmann::json& message)
+	{
+		UserId userId;
+		if(const auto user = message.find("Username"); user == message.end())
+		{
+			return "Logon missing Username";
+		}
+		else
+		{
+			userId = UserId{user->get<std::string>()};
+		}
+		connections_[connectionHandle] = userId;
+		return "Logon successful";
 	}
 } // pex

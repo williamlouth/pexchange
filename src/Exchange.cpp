@@ -20,7 +20,7 @@ namespace pex
 			  [this](const auto& userId, const auto& nos) { return newOrderSingle(userId, nos); },
 			  [this](const auto& userId, const auto& can) { return cancelOrder(userId, can); }
 		  }
-		  , server_{[this](const auto& message) { messageParser_.onRawMessage(message); }}
+		  , server_{[this](auto handle,  const auto& message) { messageParser_.onRawMessage(handle, message); }}
 	{
 	}
 	void Exchange::addRoom(const RoomId& roomId)
