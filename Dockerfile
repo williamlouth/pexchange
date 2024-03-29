@@ -1,6 +1,9 @@
-FROM ubuntu:22.04
+FROM ubuntu:23.04
+
+
 RUN apt update
 RUN apt upgrade -y
+
 RUN apt install -y cmake build-essential g++ ninja-build git
 RUN apt-get install -y grpc++ libprotobuf-dev protobuf-compiler-grpc libssl-dev
 RUN apt install -y uuid-dev pkg-config
