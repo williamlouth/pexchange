@@ -23,9 +23,17 @@ namespace pex
 		  , server_{[this](auto handle,  const auto& message) { return messageParser_.onRawMessage(handle, message); }}
 	{
 	}
+	void Exchange::stopListening()
+	{
+		server_.stopListening();
+	}
 	void Exchange::addRoom(const RoomId& roomId)
 	{
 		rooms_.insert({roomId, Room{[this](const Bid& bid, const Ask& ask, const Decimal& size){this->execute(bid, ask, size);}}} );
+	}
+	void Exchange::runServer()
+	{
+		server_.run();
 	}
 	void Exchange::execute(const Bid&, const Ask&, const Decimal&)
 	{

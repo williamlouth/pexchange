@@ -14,6 +14,9 @@ class Server {
     public:
     Server(std::function<std::string(websocketpp::connection_hdl connectionHandle, const std::string&)> onStringMessage);
 
+    void stopListening();
+    void run();
+
 private:
     void onMessage(websocketpp::connection_hdl connectionHandle, WebppServer::message_ptr msg);
 
