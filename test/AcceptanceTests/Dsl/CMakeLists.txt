@@ -1,3 +1,5 @@
 
 target_sources(AcceptanceTests PRIVATE
-        AcceptanceDsl.cpp)
+        AcceptanceDsl.cpp
+        Client.cpp
+)

@@ -25,6 +25,10 @@ namespace pex {
 			{
 				this->onMessage(connection_hdl, message_ptr);
 			});
+			server_.set_open_handler([this](auto connection_hdl)
+			{
+				this->onOpen(connection_hdl);
+			});
 
 			server_.listen(9002);
 			server_.start_accept();
@@ -44,5 +48,9 @@ namespace pex {
 	{
 		const auto returnMessage = onStringMessage_(std::move(connectionHandle), messagePtr->get_payload());
 		server_.send(connectionHandle, returnMessage, websocketpp::frame::opcode::text);
+	}
+	void Server::onOpen(websocketpp::connection_hdl connectionHandle)
+	{
+		server_.send(connectionHandle, "Connected", websocketpp::frame::opcode::text);
 	}
 } // pex

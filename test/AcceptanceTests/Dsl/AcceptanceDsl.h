@@ -7,6 +7,8 @@
 #include <memory>
 #include <thread>
 
+#include "Client.h"
+
 namespace acceptance {
 
 class AcceptanceDsl {
@@ -16,9 +18,16 @@ class AcceptanceDsl {
 
 private:
     void runExchange();
+    void runClient();
+    void onClientMessage(std::string message);
 
     pex::Exchange exchange_;
-    std::thread thread_;
+    std::thread serverThread_;
+
+    acceptance::Client client_;
+    std::thread clientThread_;
+
+    std::vector<std::string> recvMessages_;
 };
 
 } // acceptance

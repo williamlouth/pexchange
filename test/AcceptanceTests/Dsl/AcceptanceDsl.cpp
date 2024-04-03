@@ -8,18 +8,31 @@
 
 namespace acceptance {
 	AcceptanceDsl::AcceptanceDsl()
-		: thread_([this](){this->runExchange();})
+		: serverThread_([this](){this->runExchange();})
+		, client_([this](auto msg){this->onClientMessage(msg);})
+		, clientThread_([this](){this->runClient();})
 	{
-		std::this_thread::sleep_for(std::chrono::seconds{1}); //TODO: ew should wait for ability to connect
+		while(recvMessages_.empty()) //Waiting for Connected message from server
+		{}
 	}
 
 	AcceptanceDsl::~AcceptanceDsl()
 	{
+		client_.stopListening();
+		clientThread_.join();
 		exchange_.stopListening();
-		thread_.join();
+		serverThread_.join();
 	}
 	void AcceptanceDsl::runExchange()
 	{
 		exchange_.runServer();
+	}
+	void AcceptanceDsl::runClient()
+	{
+		client_.run();
+	}
+	void AcceptanceDsl::onClientMessage(std::string message)
+	{
+		recvMessages_.emplace_back(message);
 	}
 } // acceptance
