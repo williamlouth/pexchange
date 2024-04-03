@@ -46,7 +46,7 @@ namespace pex {
 
 	void Server::onMessage(websocketpp::connection_hdl connectionHandle, WebppServer::message_ptr messagePtr)
 	{
-		const auto returnMessage = onStringMessage_(std::move(connectionHandle), messagePtr->get_payload());
+		const auto returnMessage = onStringMessage_(connectionHandle, messagePtr->get_payload());
 		server_.send(connectionHandle, returnMessage, websocketpp::frame::opcode::text);
 	}
 	void Server::onOpen(websocketpp::connection_hdl connectionHandle)

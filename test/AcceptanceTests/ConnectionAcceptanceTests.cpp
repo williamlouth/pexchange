@@ -11,6 +11,8 @@ namespace acceptance
 TEST_CASE("ShouldConnectAndLogin", "[Server]")
 {
 	AcceptanceDsl dsl;
+	dsl.logOn();
+	REQUIRE(dsl.waitForMessage("Logon successfull"));
 }
 
 }

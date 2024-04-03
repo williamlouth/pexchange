@@ -16,6 +16,10 @@ class AcceptanceDsl {
     AcceptanceDsl();
     ~AcceptanceDsl();
 
+    void logOn();
+
+    bool waitForMessage(const std::string& message, const std::chrono::seconds& timeout = std::chrono::seconds{5});
+
 private:
     void runExchange();
     void runClient();
@@ -27,6 +31,7 @@ private:
     acceptance::Client client_;
     std::thread clientThread_;
 
+    std::mutex recvMessageMutex_;
     std::vector<std::string> recvMessages_;
 };
 
