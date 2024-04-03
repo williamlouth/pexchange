@@ -1,0 +1,3 @@
+target_sources(pexchangeLib PRIVATE
+CancelOrder.cpp
+NewOrderSingle.cpp)

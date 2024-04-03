@@ -3,6 +3,7 @@
 
 add_library(pexchangeLib STATIC
         Exchange.cpp
+        ExchangeInternal.cpp
         Room.cpp
         Order.cpp
         Decimal.h
@@ -13,8 +14,6 @@ add_library(pexchangeLib STATIC
         UserOrder.cpp
         Server.cpp
         MessageParser.cpp
-        Messages/NewOrderSingle.cpp
-        Messages/CancelOrder.cpp
 )
 
 target_link_libraries(pexchange pexchangeLib)
