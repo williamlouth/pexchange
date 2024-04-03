@@ -12,13 +12,13 @@ typedef websocketpp::server<websocketpp::config::asio> WebppServer;
 
 class Server {
     public:
-    Server(std::function<void(websocketpp::connection_hdl connectionHandle, const std::string&)> onStringMessage);
+    Server(std::function<std::string(websocketpp::connection_hdl connectionHandle, const std::string&)> onStringMessage);
 
 private:
     void onMessage(websocketpp::connection_hdl connectionHandle, WebppServer::message_ptr msg);
 
     WebppServer server_;
-    std::function<void(websocketpp::connection_hdl connectionHandle, const std::string&)> onStringMessage_;
+    std::function<std::string(websocketpp::connection_hdl connectionHandle, const std::string&)> onStringMessage_;
 
 };
 
