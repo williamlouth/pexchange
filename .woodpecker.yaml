@@ -35,3 +35,11 @@ steps:
     when:
       - branch: main
         event: push
+
+  - name: AcceptanceTest
+    image: local/project-image
+    commands:
+      -  ./cmake-build-debug/test/AcceptanceTests/AcceptanceTests
+    when:
+      - branch: main
+        event: push
