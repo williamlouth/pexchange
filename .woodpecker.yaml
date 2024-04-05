@@ -36,6 +36,14 @@ steps:
       - branch: main
         event: push
 
+  - name: IntegrationTest
+    image: local/project-image
+    commands:
+      -  ./cmake-build-debug/test/IntegrationTests/IntegrationTests
+    when:
+      - branch: main
+        event: push
+
   - name: AcceptanceTest
     image: local/project-image
     commands:
