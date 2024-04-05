@@ -15,13 +15,13 @@ TEST_CASE("ShouldMatchBidAndAsk", "[Room]")
 
 	SECTION("bidFirst")
 	{
-		room.addBid({2, {}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addAsk({1, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({2, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({1, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 	}
 	SECTION("askFirst")
 	{
-		room.addAsk({1, {}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addBid({2, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({1, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({2, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 	}
 
 	REQUIRE(executed);
@@ -43,16 +43,16 @@ TEST_CASE("ShouldMatchFirstBidAndAsk", "[Room]")
 
 	SECTION("bidFirst")
 	{
-		room.addBid({1, {}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addBid({2, {}, pex::Decimal{90}, pex::Decimal{10}});
-		room.addAsk({3, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({1, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({2, "user", {}, pex::Decimal{90}, pex::Decimal{10}});
+		room.addAsk({3, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 		REQUIRE(bidId == pex::OrderId{1});
 	}
 	SECTION("askFirst")
 	{
-		room.addAsk({1, {}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addAsk({2, {}, pex::Decimal{110}, pex::Decimal{10}});
-		room.addBid({3, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({1, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({2, "user", {}, pex::Decimal{110}, pex::Decimal{10}});
+		room.addBid({3, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 		REQUIRE(askId == pex::OrderId{1});
 	}
 
@@ -67,13 +67,13 @@ TEST_CASE("ShouldNotMatchBidAndAsk", "[Room]")
 
 	SECTION("bidFirst")
 	{
-		room.addBid({2, {}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addAsk({1, {}, pex::Decimal{110}, pex::Decimal{10}});
+		room.addBid({2, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({1, "user", {}, pex::Decimal{110}, pex::Decimal{10}});
 	}
 	SECTION("askFirst")
 	{
-		room.addAsk({1, {}, pex::Decimal{110}, pex::Decimal{10}});
-		room.addBid({2, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({1, "user", {}, pex::Decimal{110}, pex::Decimal{10}});
+		room.addBid({2, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 	}
 
 	REQUIRE(!executed);
@@ -94,16 +94,16 @@ TEST_CASE("ShouldMatchBidAndAskInTimeOrder", "[Room]")
 
 	SECTION("bidFirst")
 	{
-		room.addBid({1, pex::TimePoint{} + std::chrono::seconds{10}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addBid({2, {}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addAsk({3, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({1, "user", pex::TimePoint{} + std::chrono::seconds{10}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({2, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({3, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 		REQUIRE(bidId == pex::OrderId{2});
 	}
 	SECTION("askFirst")
 	{
-		room.addAsk({1, pex::TimePoint{} + std::chrono::seconds{10}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addAsk({2, {}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addBid({3, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({1, "user", pex::TimePoint{} + std::chrono::seconds{10}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({2, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({3, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 		REQUIRE(askId == pex::OrderId{2});
 	}
 
@@ -123,13 +123,13 @@ TEST_CASE("ShouldMatchPartBidAndAsk", "[Room]")
 
 	SECTION("bidFirst")
 	{
-		room.addBid({1, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{100}});
-		room.addAsk({3, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({1, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{100}});
+		room.addAsk({3, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 	}
 	SECTION("askFirst")
 	{
-		room.addAsk({1, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{100}});
-		room.addBid({3, {}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({1, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{100}});
+		room.addBid({3, "user", {}, pex::Decimal{100}, pex::Decimal{10}});
 	}
 
 	REQUIRE(executed);
@@ -146,16 +146,16 @@ TEST_CASE("ShouldMatch2BidAndAsk", "[Room]")
 
 	SECTION("bidFirst")
 	{
-		room.addBid({1, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addBid({2, pex::TimePoint{}, pex::Decimal{90}, pex::Decimal{10}});
-		room.addAsk({3, {}, pex::Decimal{90}, pex::Decimal{20}});
+		room.addBid({1, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({2, "user", pex::TimePoint{}, pex::Decimal{90}, pex::Decimal{10}});
+		room.addAsk({3, "user", {}, pex::Decimal{90}, pex::Decimal{20}});
 		REQUIRE(executed == 2);
 	}
 	SECTION("askFirst")
 	{
-		room.addAsk({1, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addAsk({2, pex::TimePoint{}, pex::Decimal{110}, pex::Decimal{10}});
-		room.addBid({3, {}, pex::Decimal{110}, pex::Decimal{20}});
+		room.addAsk({1, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({2, "user", pex::TimePoint{}, pex::Decimal{110}, pex::Decimal{10}});
+		room.addBid({3, "user", {}, pex::Decimal{110}, pex::Decimal{20}});
 		REQUIRE(executed == 2);
 	}
 }
@@ -171,18 +171,18 @@ TEST_CASE("ShouldMatchBidAndAskWithLeftOver", "[Room]")
 
 	SECTION("bidFirst")
 	{
-		room.addBid({1, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addAsk({2, {}, pex::Decimal{100}, pex::Decimal{20}});
+		room.addBid({1, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({2, "user", {}, pex::Decimal{100}, pex::Decimal{20}});
 		REQUIRE(executed == 1);
-		room.addBid({3, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({3, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
 		REQUIRE(executed == 2);
 	}
 	SECTION("askFirst")
 	{
-		room.addAsk({1, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
-		room.addBid({2, {}, pex::Decimal{100}, pex::Decimal{20}});
+		room.addAsk({1, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addBid({2, "user", {}, pex::Decimal{100}, pex::Decimal{20}});
 		REQUIRE(executed == 1);
-		room.addAsk({3, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
+		room.addAsk({3, "user", pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
 		REQUIRE(executed == 2);
 	}
 }

@@ -9,6 +9,7 @@
 namespace pex {
 
 struct NewOrderSingle {
+    UserId user;
     ClOrdId clOrdId;
     RoomId roomId;
     TimePoint timeStamp;

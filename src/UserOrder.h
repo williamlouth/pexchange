@@ -9,7 +9,7 @@ namespace pex {
 
 class UserOrder : public Order{
     public:
-    explicit UserOrder(const OrderId& id, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz, const RoomId& roomId);
+    explicit UserOrder(const OrderId& id, const UserId& user, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz, const RoomId& roomId);
 
     RoomId roomId;
 };

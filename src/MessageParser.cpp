@@ -103,7 +103,7 @@ namespace pex
 			clOrdId = ClOrdId{clId->get<uint64_t>()};
 		}
 
-		return newOrderSingle_(user, NewOrderSingle{clOrdId, roomId, TimePoint{}, px, sz}); //TODO: sort out timepoint
+		return newOrderSingle_(user, NewOrderSingle{user, clOrdId, roomId, TimePoint{}, px, sz}); //TODO: sort out timepoint
 	}
 	std::string MessageParser::onCancelOrder(const UserId& user, const nlohmann::json& message)
 	{

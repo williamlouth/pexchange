@@ -54,15 +54,15 @@ namespace pex
 		const auto orderId = orderIdGenerator_.getNextOrderId();
 		if(newOrderSingle.sz > 0)
 		{
-			const auto bid = Bid{orderId, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz};
-			const auto userOrder = UserOrder{orderId, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz, newOrderSingle.roomId};
+			const auto bid = Bid{orderId, newOrderSingle.user, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz};
+			const auto userOrder = UserOrder{orderId, newOrderSingle.user, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz, newOrderSingle.roomId};
 			bids_.insert({newOrderSingle.clOrdId,userOrder});
 			addBid_(newOrderSingle.roomId, bid);
 		}
 		else
 		{
-			const auto ask = Ask{orderId, newOrderSingle.timeStamp, newOrderSingle.px, -newOrderSingle.sz};
-			const auto userOrder = UserOrder{orderId, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz, newOrderSingle.roomId};
+			const auto ask = Ask{orderId, newOrderSingle.user, newOrderSingle.timeStamp, newOrderSingle.px, -newOrderSingle.sz};
+			const auto userOrder = UserOrder{orderId, newOrderSingle.user, newOrderSingle.timeStamp, newOrderSingle.px, newOrderSingle.sz, newOrderSingle.roomId};
 			asks_.insert({newOrderSingle.clOrdId,userOrder});
 			addAsk_(newOrderSingle.roomId, ask);
 		}

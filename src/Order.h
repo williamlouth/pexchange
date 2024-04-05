@@ -14,6 +14,7 @@ namespace pex {
 class Order {
 public:
 	OrderId id;
+	UserId user;
 	TimePoint timeStamp;
 	Decimal px;
 	Decimal sz;
@@ -25,14 +26,14 @@ public:
 class Bid : public Order
 {
 public:
-	Bid(const OrderId& id, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
+	Bid(const OrderId& id, const UserId& user, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
 	bool operator<(const Bid& other) const;
 };
 
 class Ask : public Order
 {
 public:
-	Ask(const OrderId& id, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
+	Ask(const OrderId& id, const UserId& user, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz);
 	bool operator<(const Ask& other) const;
 };
 

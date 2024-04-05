@@ -31,7 +31,7 @@ namespace pex {
 	    );
 
 	    std::string addOrder(const NewOrderSingle& newOrderSingle);
-	    std::string deleteOrder(const CancelOrder& clOrdId);
+	    std::string deleteOrder(const CancelOrder& cancelOrder);
     private:
 		void createOrder(const NewOrderSingle& newOrderSingle);
 

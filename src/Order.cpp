@@ -9,8 +9,8 @@ namespace pex {
 	{
 		return sz - filled;
 	}
-	Bid::Bid(const OrderId& id, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz)
-		: Order{id, timeStamp, px, sz, Decimal{0}}
+	Bid::Bid(const OrderId& id, const UserId& user, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz)
+		: Order{id, user, timeStamp, px, sz, Decimal{0}}
 	{
 	}
 
@@ -23,8 +23,8 @@ namespace pex {
 		return px > other.px;
 	}
 
-	Ask::Ask(const OrderId& id, const TimePoint& timeStamp, const Decimal& px, const Decimal& sz)
-		: Order{id, timeStamp, px, sz, Decimal{0}}
+	Ask::Ask(const OrderId& id, const UserId& user,const TimePoint& timeStamp, const Decimal& px, const Decimal& sz)
+		: Order{id, user, timeStamp, px, sz, Decimal{0}}
 	{
 	}
 

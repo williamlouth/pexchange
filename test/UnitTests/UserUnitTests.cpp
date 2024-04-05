@@ -29,9 +29,9 @@ TEST_CASE("ShouldAddBidAsk", "[Room]")
 	auto addAsk = [&addedAsk](const pex::RoomId&, const pex::Ask& ask){addedAsk = true; REQUIRE(ask.id == 2);};
 
 	pex::User u{orderIdGen, addBid, addAsk, emptyDelete, emptyDelete};
-	u.addOrder(pex::NewOrderSingle{pex::ClOrdId{0}, pex::RoomId{"roomy"}, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
+	u.addOrder(pex::NewOrderSingle{"user", pex::ClOrdId{0}, pex::RoomId{"roomy"}, pex::TimePoint{}, pex::Decimal{100}, pex::Decimal{10}});
 	REQUIRE(addedBid);
-	u.addOrder(pex::NewOrderSingle{1, "roomy", {}, pex::Decimal{110}, pex::Decimal{-10}});
+	u.addOrder(pex::NewOrderSingle{"user", 1, "roomy", {}, pex::Decimal{110}, pex::Decimal{-10}});
 	REQUIRE(addedAsk);
 }
 
@@ -44,8 +44,8 @@ TEST_CASE("ShouldDeleteBidAsk", "[Room]")
 	auto deleteAsk = [&deletedAsk](const pex::RoomId&, const pex::OrderId& id){deletedAsk = true; REQUIRE(id == 2);};
 
 	pex::User u{orderIdGen, emptyAddBid, emptyAddAsk, deleteBid, deleteAsk};
-	u.addOrder(pex::NewOrderSingle{0, "roomy", {}, pex::Decimal{100}, pex::Decimal{10}});
-	u.addOrder(pex::NewOrderSingle{1, "roomy", {}, pex::Decimal{110}, pex::Decimal{-10}});
+	u.addOrder(pex::NewOrderSingle{"user", 0, "roomy", {}, pex::Decimal{100}, pex::Decimal{10}});
+	u.addOrder(pex::NewOrderSingle{"user", 1, "roomy", {}, pex::Decimal{110}, pex::Decimal{-10}});
 	u.deleteOrder(pex::CancelOrder{0});
 	REQUIRE(deletedBid);
 	u.deleteOrder(pex::CancelOrder{1});

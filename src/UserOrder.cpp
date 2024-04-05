@@ -6,11 +6,12 @@
 
 namespace pex {
 	UserOrder::UserOrder(const OrderId& id,
+		const UserId& user,
 		const TimePoint& timeStamp,
 		const Decimal& px,
 		const Decimal& sz,
 		const RoomId& roomId)
-			: Order{id, timeStamp, px, sz, Decimal{0}}
+			: Order{id, user, timeStamp, px, sz, Decimal{0}}
 			, roomId{roomId}
 	{
 	}
