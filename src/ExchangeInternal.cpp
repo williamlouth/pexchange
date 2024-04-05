@@ -12,7 +12,9 @@ namespace pex {
 			[this](const RoomId& roomId, const Bid& bid) { this->addBid(roomId, bid); },
 			[this](const RoomId& roomId, const Ask& ask) { this->addAsk(roomId, ask); },
 			[this](const RoomId& roomId, const OrderId& id) { this->deleteBid(roomId, id); },
-			[this](const RoomId& roomId, const OrderId& id) { this->deleteAsk(roomId, id); }
+			[this](const RoomId& roomId, const OrderId& id) { this->deleteAsk(roomId, id); },
+			[this](const UserId& user, const ClOrdId& clOrdId, const Decimal& fillAmount) { this->fullyFilled(user, clOrdId, fillAmount); },
+			[this](const UserId& user, const ClOrdId& clOrdId, const Decimal& fillAmount) { this->partiallyFilled(user, clOrdId, fillAmount); },
 		  }
 		  , messageParser_{
 			  [this](const auto& userId, const auto& nos) { return newOrderSingle(userId, nos); },
@@ -54,6 +56,14 @@ namespace pex {
 		{
 			itr->second.deleteAsk(id);
 		}
+	}
+	void ExchangeInternal::partiallyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)
+	{
+		messageParser_.partiallyFilled(user, clOrdId, filledAmount);
+	}
+	void ExchangeInternal::fullyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)
+	{
+		messageParser_.fullyFilled(user, clOrdId, filledAmount);
 	}
 	std::string ExchangeInternal::newOrderSingle(const UserId& user, const NewOrderSingle& newOrderSingle)
 	{

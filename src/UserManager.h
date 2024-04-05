@@ -21,10 +21,16 @@ namespace pex {
 	    UserManager(const std::function<void(const RoomId& roomId, const Bid& bid)>& addBid,
 	                const std::function<void(const RoomId& roomId, const Ask& ask)>& addAsk,
 					const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteBid,
-	                const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk );
+	                const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk,
+					const std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)>& fullyFilled,
+					const std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)>& partiallyFilled
+	                );
 
     	std::string newOrderSingle(const UserId&, const NewOrderSingle&);
 	    std::string cancelOrder(const UserId& user, const CancelOrder& cancelOrder);
+
+    	void executeBid(const Bid& bid, const Decimal& fillAmount);
+    	void executeAsk(const Ask& ask, const Decimal& fillAmount);
 
     private:
 
@@ -32,6 +38,10 @@ namespace pex {
 		std::function<void(const RoomId& roomId, const Ask& ask)> addAsk_;
 		std::function<void(const RoomId& roomId, const OrderId& id)> deleteBid_;
 		std::function<void(const RoomId& roomId, const OrderId& id)> deleteAsk_;
+
+		std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)> fullyFilled_;
+		std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)> partiallyFilled_;
+
     	std::map<UserId, User> users_;
 
     	OrderIdGenerator orderIdGenerator_;

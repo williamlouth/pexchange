@@ -32,6 +32,12 @@ namespace pex
 		catch (...)
 		{	return "Unknown error";}
 	}
+	void MessageParser::fullyFilled(const UserId&, const ClOrdId&, const Decimal&)
+	{
+	}
+	void MessageParser::partiallyFilled(const UserId&, const ClOrdId&, const Decimal&)
+	{
+	}
 	std::string MessageParser::onJsonMessage(ConnectionId connectionId, const nlohmann::json& message)
 	{
 		if(const auto messageTypeItr = message.find("type"); messageTypeItr == message.end())

@@ -11,11 +11,16 @@ namespace pex
 	UserManager::UserManager(const std::function<void(const RoomId& roomId, const Bid& bid)>& addBid,
 	                         const std::function<void(const RoomId& roomId, const Ask& ask)>& addAsk,
 	                         const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteBid,
-	                         const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk)
+	                         const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk,
+	                         const std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)>& fullyFilled,
+							 const std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)>& partiallyFilled
+	                         )
 		: addBid_{addBid}
 		, addAsk_{addAsk}
 		, deleteBid_{deleteBid}
 		, deleteAsk_{deleteAsk}
+		, fullyFilled_{fullyFilled}
+		, partiallyFilled_{partiallyFilled}
 		, orderIdGenerator_{OrderId{0}} //TODO: load last value from database
 	{
 	}
@@ -39,6 +44,20 @@ namespace pex
 		else
 		{
 			return user->second.deleteOrder(cancelOrder);
+		}
+	}
+	void UserManager::executeBid(const Bid& bid, const Decimal& fillAmount)
+	{
+		if(const auto user = users_.find(bid.user); user != users_.end())
+		{
+			user->second.executeBid(bid, fillAmount);
+		}
+	}
+	void UserManager::executeAsk(const Ask& ask, const Decimal& fillAmount)
+	{
+		if(const auto user = users_.find(ask.user); user != users_.end())
+		{
+			user->second.executeAsk(ask, fillAmount);
 		}
 	}
 } // pex

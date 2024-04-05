@@ -29,6 +29,9 @@ class ExchangeInternal {
 		void deleteBid(const RoomId& roomId, const OrderId& id);
 		void deleteAsk(const RoomId& roomId, const OrderId& id);
 
+		void partiallyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount);
+		void fullyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount);
+
 		std::string newOrderSingle(const UserId& user, const NewOrderSingle& newOrderSingle);
 		std::string cancelOrder(const UserId& user, const CancelOrder& cancelOrder);
 

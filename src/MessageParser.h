@@ -19,6 +19,9 @@ class MessageParser {
 	explicit MessageParser(std::function<std::string(const UserId&,const NewOrderSingle&)> newOrderSingle,
 		std::function<std::string(const UserId&, const CancelOrder&)> cancelOrder);
 	std::string onRawMessage(ConnectionId connectionId, const std::string& rawMessage);
+	void fullyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& decimal);
+	void partiallyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& decimal);
+
 private:
 	std::string onJsonMessage(ConnectionId connectionId, const nlohmann::json& message);
 	std::string onNewOrderSingle(const UserId& user, const nlohmann::json& message);

@@ -17,12 +17,16 @@ namespace pex
 	           const std::function<void(const RoomId& roomId, const Bid& bid)>& addBid,
 	           const std::function<void(const RoomId& roomId, const Ask& ask)>& addAsk,
 	           const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteBid,
-	           const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk
+	           const std::function<void(const RoomId& roomId, const OrderId& id)>& deleteAsk,
+	           const std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)>& fullyFilled,
+	           const std::function<void(const UserId& user, const ClOrdId& clOrdId, const Decimal& filledAmount)>& partiallyFilled
 	           )
 		: addBid_{addBid}
 		, addAsk_{addAsk}
 		, deleteBid_{deleteBid}
 		, deleteAsk_{deleteAsk}
+		, fullyFilled_{fullyFilled}
+		, partiallyFilled_{partiallyFilled}
 		, orderIdGenerator_{orderIdGenerator}
 	{
 	}
@@ -47,6 +51,36 @@ namespace pex
 		else
 		{
 			return "ClOrdId not found: " + cancelOrder.clOrdId;
+		}
+	}
+	void User::executeBid(const Bid& bid, const Decimal& fillAmount)
+	{
+		if(auto itr = std::find_if(bids_.begin(), bids_.end(), [&bid](const auto& p){return p.second.id == bid.id;}); itr != bids_.end())
+		{
+			if(bid.remains() == 0)
+			{
+				fullyFilled_(bid.user, itr->first, fillAmount);
+				bids_.erase(itr);
+			}
+			else
+			{
+				partiallyFilled_(bid.user, itr->first, fillAmount);
+			}
+		}
+	}
+	void User::executeAsk(const Ask& ask, const Decimal& fillAmount)
+	{
+		if(auto itr = std::find_if(asks_.begin(), asks_.end(), [&ask](const auto& p){return p.second.id == ask.id;}); itr != asks_.end())
+		{
+			if(ask.remains() == 0)
+			{
+				fullyFilled_(ask.user, itr->first, fillAmount);
+				bids_.erase(itr);
+			}
+			else
+			{
+				partiallyFilled_(ask.user, itr->first, fillAmount);
+			}
 		}
 	}
 	void User::createOrder(const NewOrderSingle& newOrderSingle)
