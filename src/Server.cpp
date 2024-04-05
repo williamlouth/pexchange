@@ -5,7 +5,7 @@
 #include "Server.h"
 
 namespace pex {
-	Server::Server(std::function<std::string(websocketpp::connection_hdl connectionHandle, const std::string&)> onStringMessage)
+	Server::Server(std::function<std::string(ConnectionId conectionId, const std::string&)> onStringMessage)
 		: onStringMessage_{onStringMessage}
 	{
 	}
@@ -46,11 +46,16 @@ namespace pex {
 
 	void Server::onMessage(websocketpp::connection_hdl connectionHandle, WebppServer::message_ptr messagePtr)
 	{
-		const auto returnMessage = onStringMessage_(connectionHandle, messagePtr->get_payload());
+		const auto returnMessage = onStringMessage_(connections_.at(connectionHandle), messagePtr->get_payload());
 		server_.send(connectionHandle, returnMessage, websocketpp::frame::opcode::text);
 	}
 	void Server::onOpen(websocketpp::connection_hdl connectionHandle)
 	{
+		connections_[connectionHandle] = lastConnectionId_++;
 		server_.send(connectionHandle, "Connected", websocketpp::frame::opcode::text);
+	}
+	void Server::onClose(websocketpp::connection_hdl connectionHandle)
+	{
+		connections_.erase(connectionHandle);
 	}
 } // pex

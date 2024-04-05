@@ -19,11 +19,11 @@ namespace pex
 		, cancelOrder_{std::move(cancelOrder)}
 	{
 	}
-	std::string MessageParser::onRawMessage(websocketpp::connection_hdl connectionHandle, const std::string& rawMessage)
+	std::string MessageParser::onRawMessage(ConnectionId connectionId, const std::string& rawMessage)
 	{
 		try
 		{
-			return onJsonMessage(connectionHandle, nlohmann::json::parse(rawMessage));
+			return onJsonMessage(connectionId, nlohmann::json::parse(rawMessage));
 		}
 		catch (nlohmann::json::parse_error const & e)
 		{
@@ -32,7 +32,7 @@ namespace pex
 		catch (...)
 		{	return "Unknown error";}
 	}
-	std::string MessageParser::onJsonMessage(websocketpp::connection_hdl connectionHandle, const nlohmann::json& message)
+	std::string MessageParser::onJsonMessage(ConnectionId connectionId, const nlohmann::json& message)
 	{
 		if(const auto messageTypeItr = message.find("type"); messageTypeItr == message.end())
 		{
@@ -43,10 +43,10 @@ namespace pex
 			const auto messageType = messageTypeItr->get<std::string>();
 			if (messageType == "LogOn")
 			{
-				return onLogOn(connectionHandle, message);
+				return onLogOn(connectionId, message);
 			}
 
-			if (auto user = connections_.find(connectionHandle); user == connections_.end())
+			if (auto user = connections_.find(connectionId); user == connections_.end())
 			{
 				return "Not Logged In";
 			}
@@ -118,7 +118,7 @@ namespace pex
 		}
 		return cancelOrder_(user, CancelOrder{clOrdId});
 	}
-	std::string MessageParser::onLogOn(websocketpp::connection_hdl connectionHandle, const nlohmann::json& message)
+	std::string MessageParser::onLogOn(ConnectionId connectionId, const nlohmann::json& message)
 	{
 		UserId userId;
 		if(const auto user = message.find("Username"); user == message.end())
@@ -129,7 +129,7 @@ namespace pex
 		{
 			userId = UserId{user->get<std::string>()};
 		}
-		connections_[connectionHandle] = userId;
+		connections_[connectionId] = userId;
 		return "Logon successfull";
 	}
 } // pex

@@ -9,40 +9,40 @@
 
 auto emptyCallback = [](const auto&,const auto&){return "";};
 
-websocketpp::connection_hdl emptyHandle;
+pex::ConnectionId emptyConnectionId;
 std::string logonMessage = nlohmann::json{{"type","LogOn"},{"Username","user"}}.dump();
 
 TEST_CASE("ShouldErrorIfParseError", "[MessageParsing]")
 {
 	pex::MessageParser parser{emptyCallback,emptyCallback};
-	REQUIRE(parser.onRawMessage(emptyHandle,"") == "parse error of incoming message");
+	REQUIRE(parser.onRawMessage(emptyConnectionId,"") == "parse error of incoming message");
 }
 
 TEST_CASE("ShouldErrorIfMissingType", "[MessageParsing]")
 {
 	pex::MessageParser parser{emptyCallback,emptyCallback};
-	REQUIRE(parser.onRawMessage(emptyHandle,"{\"hi\" : \"ho\"}") == "message is missing type");
+	REQUIRE(parser.onRawMessage(emptyConnectionId,"{\"hi\" : \"ho\"}") == "message is missing type");
 }
 
 TEST_CASE("ShouldErrorIfNotLoggedIn", "[MessageParsing]")
 {
 	pex::MessageParser parser{emptyCallback,emptyCallback};
-	REQUIRE(parser.onRawMessage(emptyHandle,"{\"type\" : \"ho\"}") == "Not Logged In");
+	REQUIRE(parser.onRawMessage(emptyConnectionId,"{\"type\" : \"ho\"}") == "Not Logged In");
 }
 
 TEST_CASE("ShouldLogIn", "[MessageParsing]")
 {
 	pex::MessageParser parser{emptyCallback,emptyCallback};
-	REQUIRE(parser.onRawMessage(emptyHandle,logonMessage) == "Logon successfull");
+	REQUIRE(parser.onRawMessage(emptyConnectionId,logonMessage) == "Logon successfull");
 }
 
 TEST_CASE("ShouldErrorIfUnrecognisedType", "[MessageParsing]")
 {
 	pex::MessageParser parser{emptyCallback,emptyCallback};
-	parser.onRawMessage(emptyHandle, logonMessage);
+	parser.onRawMessage(emptyConnectionId, logonMessage);
 	nlohmann::json message;
 	message["type"] = "bla";
-	REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "Unsupported message type: bla");
+	REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "Unsupported message type: bla");
 }
 
 TEST_CASE("ShouldParseNewOrderSingleCorrectly", "[MessageParsing]")
@@ -57,7 +57,7 @@ TEST_CASE("ShouldParseNewOrderSingleCorrectly", "[MessageParsing]")
 		return "success";
 	};
 	pex::MessageParser parser{newOrderSingleCallback,emptyCallback};
-	parser.onRawMessage(emptyHandle, logonMessage);
+	parser.onRawMessage(emptyConnectionId, logonMessage);
 
 	nlohmann::json message;
 	message["type"] = "NewOrderSingle";
@@ -68,27 +68,27 @@ TEST_CASE("ShouldParseNewOrderSingleCorrectly", "[MessageParsing]")
 
 	SECTION("Everything")
 	{
-		REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "success");
+		REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "success");
 	}
 	SECTION("NoPrice")
 	{
 		message.erase("price");
-		REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "NewOrderSingle missing price");
+		REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "NewOrderSingle missing price");
 	}
 	SECTION("NoSize")
 	{
 		message.erase("size");
-		REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "NewOrderSingle missing size");
+		REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "NewOrderSingle missing size");
 	}
 	SECTION("NoInstrument")
 	{
 		message.erase("instrument");
-		REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "NewOrderSingle missing instrument");
+		REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "NewOrderSingle missing instrument");
 	}
 	SECTION("NoClOrdId")
 	{
 		message.erase("ClOrdId");
-		REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "NewOrderSingle missing ClOrdId");
+		REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "NewOrderSingle missing ClOrdId");
 	}
 }
 
@@ -101,7 +101,7 @@ TEST_CASE("ShouldParseCancelOrdersCorrectly", "[MessageParsing]")
 		return "success";
 	};
 	pex::MessageParser parser{emptyCallback,cancelOrderCallback};
-	parser.onRawMessage(emptyHandle, logonMessage);
+	parser.onRawMessage(emptyConnectionId, logonMessage);
 
 	nlohmann::json message;
 	message["type"] = "CancelOrder";
@@ -109,11 +109,11 @@ TEST_CASE("ShouldParseCancelOrdersCorrectly", "[MessageParsing]")
 
 	SECTION("Everything")
 	{
-		REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "success");
+		REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "success");
 	}
 	SECTION("NoClOrdId")
 	{
 		message.erase("ClOrdId");
-		REQUIRE(parser.onRawMessage(emptyHandle,message.dump()) == "CancelOrder missing ClOrdId");
+		REQUIRE(parser.onRawMessage(emptyConnectionId,message.dump()) == "CancelOrder missing ClOrdId");
 	}
 }
