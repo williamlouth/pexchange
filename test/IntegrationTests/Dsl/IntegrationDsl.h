@@ -17,13 +17,14 @@ namespace integration {
 
 class IntegrationDsl {
     public:
-    void createUser(const std::string& user);
-    std::string sendMessage(const std::string& message, const std::string& user);
+    void createUser(const pex::UserId& user);
+    std::string sendMessage(const std::string& message, const pex::UserId& user);
 
+    bool userMessageContains(const pex::UserId& user, const std::string& message);
 private:
     IntegrationExchange exchange_;
 
-    std::map<std::string,pex::ConnectionId> users_;
+    std::map<pex::UserId,pex::ConnectionId> users_;
 
     pex::ConnectionId lastConnectionNumber_;
 };

@@ -13,8 +13,12 @@ class IntegrationExchange : public pex::ExchangeInternal {
 
     std::string onMessage(pex::ConnectionId connectionId, const std::string& message);
 
+    bool connectionMessageContains(const pex::ConnectionId& connection, const std::string& message);
+
 protected:
 		void sendMessage(const pex::ConnectionId& connection, const std::string& message) override;
+private:
+    std::map<pex::ConnectionId, std::vector<std::string>> connectionMessages_;
 };
 
 } // integration
