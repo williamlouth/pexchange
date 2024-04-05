@@ -13,6 +13,8 @@ class IntegrationExchange : public pex::ExchangeInternal {
 
     std::string onMessage(pex::ConnectionId connectionId, const std::string& message);
 
+protected:
+		void sendMessage(const pex::ConnectionId& connection, const std::string& message) override;
 };
 
 } // integration

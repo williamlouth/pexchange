@@ -18,6 +18,10 @@ namespace pex {
 		void stopListening();
 		void runServer();
 
+	protected:
+		void sendMessage(const ConnectionId& connection, const std::string& message) override;
+
+	public:
 		Server server_;
 };
 

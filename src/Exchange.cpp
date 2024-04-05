@@ -19,4 +19,7 @@ namespace pex
 	{
 		server_.run();
 	}
+	void Exchange::sendMessage(const ConnectionId&, const std::string&)
+	{
+	}
 } // pex

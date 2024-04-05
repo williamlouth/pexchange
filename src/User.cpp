@@ -3,6 +3,7 @@
 //
 
 #include "User.h"
+#include <algorithm>
 
 #include <Messages/CancelOrder.h>
 #include <Messages/NewOrderSingle.h>
@@ -38,14 +39,14 @@ namespace pex
 	}
 	std::string User::deleteOrder(const CancelOrder& cancelOrder)
 	{
-		if(auto itr = bids_.find(cancelOrder.clOrdId); itr != bids_.end())
+		if(const auto itr = bids_.find(cancelOrder.clOrdId); itr != bids_.end())
 		{
 			deleteBid_(itr->second.roomId, itr->second.id);
 			return "Successfully deleted order: " + cancelOrder.clOrdId;
 		}
-		else if(auto itr = asks_.find(cancelOrder.clOrdId); itr != asks_.end())
+		else if(const auto askItr = asks_.find(cancelOrder.clOrdId);  askItr != asks_.end())
 		{
-			deleteAsk_(itr->second.roomId, itr->second.id);
+			deleteAsk_( askItr->second.roomId,  askItr->second.id);
 			return "Successfully deleted order: " + cancelOrder.clOrdId;
 		}
 		else
@@ -55,7 +56,7 @@ namespace pex
 	}
 	void User::executeBid(const Bid& bid, const Decimal& fillAmount)
 	{
-		if(auto itr = std::find_if(bids_.begin(), bids_.end(), [&bid](const auto& p){return p.second.id == bid.id;}); itr != bids_.end())
+		if(const auto itr = std::ranges::find_if(bids_, [&bid](const auto& p){return p.second.id == bid.id;}); itr != bids_.end())
 		{
 			if(bid.remains() == 0)
 			{
@@ -70,7 +71,7 @@ namespace pex
 	}
 	void User::executeAsk(const Ask& ask, const Decimal& fillAmount)
 	{
-		if(auto itr = std::find_if(asks_.begin(), asks_.end(), [&ask](const auto& p){return p.second.id == ask.id;}); itr != asks_.end())
+		if(const auto itr = std::ranges::find_if(asks_, [&ask](const auto& p){return p.second.id == ask.id;}); itr != asks_.end())
 		{
 			if(ask.remains() == 0)
 			{

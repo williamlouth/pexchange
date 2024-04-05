@@ -14,9 +14,12 @@
 namespace pex
 {
 	MessageParser::MessageParser(std::function<std::string(const UserId&, const NewOrderSingle&)> newOrderSingle,
-	                             std::function<std::string(const UserId&, const CancelOrder&)> cancelOrder)
+	                             std::function<std::string(const UserId&, const CancelOrder&)> cancelOrder,
+	                             std::function<void(const ConnectionId&, const std::string&)> sendMessage
+	                             )
 		: newOrderSingle_{std::move(newOrderSingle)}
 		, cancelOrder_{std::move(cancelOrder)}
+		, sendMessage_{std::move(sendMessage)}
 	{
 	}
 	std::string MessageParser::onRawMessage(ConnectionId connectionId, const std::string& rawMessage)

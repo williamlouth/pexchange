@@ -19,7 +19,8 @@ namespace pex {
 
 class ExchangeInternal {
     public:
-		ExchangeInternal();
+	ExchangeInternal();
+	virtual ~ExchangeInternal() = default;
 
 		void addRoom(const RoomId& roomId);
     protected:
@@ -34,6 +35,8 @@ class ExchangeInternal {
 
 		std::string newOrderSingle(const UserId& user, const NewOrderSingle& newOrderSingle);
 		std::string cancelOrder(const UserId& user, const CancelOrder& cancelOrder);
+
+		virtual void sendMessage(const ConnectionId& connection, const std::string& message) = 0;
 
         std::map<RoomId,Room> rooms_;
 		UserManager userManager_;

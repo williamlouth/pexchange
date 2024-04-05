@@ -8,37 +8,38 @@
 #include <Messages/CancelOrder.h>
 
 auto emptyCallback = [](const auto&,const auto&){return "";};
+auto emptySend = [](const auto&,const auto&){};
 
 pex::ConnectionId emptyConnectionId;
 std::string logonMessage = nlohmann::json{{"type","LogOn"},{"Username","user"}}.dump();
 
 TEST_CASE("ShouldErrorIfParseError", "[MessageParsing]")
 {
-	pex::MessageParser parser{emptyCallback,emptyCallback};
+	pex::MessageParser parser{emptyCallback,emptyCallback, emptySend};
 	REQUIRE(parser.onRawMessage(emptyConnectionId,"") == "parse error of incoming message");
 }
 
 TEST_CASE("ShouldErrorIfMissingType", "[MessageParsing]")
 {
-	pex::MessageParser parser{emptyCallback,emptyCallback};
+	pex::MessageParser parser{emptyCallback,emptyCallback, emptySend};
 	REQUIRE(parser.onRawMessage(emptyConnectionId,"{\"hi\" : \"ho\"}") == "message is missing type");
 }
 
 TEST_CASE("ShouldErrorIfNotLoggedIn", "[MessageParsing]")
 {
-	pex::MessageParser parser{emptyCallback,emptyCallback};
+	pex::MessageParser parser{emptyCallback,emptyCallback, emptySend};
 	REQUIRE(parser.onRawMessage(emptyConnectionId,"{\"type\" : \"ho\"}") == "Not Logged In");
 }
 
 TEST_CASE("ShouldLogIn", "[MessageParsing]")
 {
-	pex::MessageParser parser{emptyCallback,emptyCallback};
+	pex::MessageParser parser{emptyCallback,emptyCallback, emptySend};
 	REQUIRE(parser.onRawMessage(emptyConnectionId,logonMessage) == "Logon successfull");
 }
 
 TEST_CASE("ShouldErrorIfUnrecognisedType", "[MessageParsing]")
 {
-	pex::MessageParser parser{emptyCallback,emptyCallback};
+	pex::MessageParser parser{emptyCallback,emptyCallback, emptySend};
 	parser.onRawMessage(emptyConnectionId, logonMessage);
 	nlohmann::json message;
 	message["type"] = "bla";
@@ -56,7 +57,7 @@ TEST_CASE("ShouldParseNewOrderSingleCorrectly", "[MessageParsing]")
 		REQUIRE(newOrderSingle.roomId == "dogecoin");
 		return "success";
 	};
-	pex::MessageParser parser{newOrderSingleCallback,emptyCallback};
+	pex::MessageParser parser{newOrderSingleCallback,emptyCallback, emptySend};
 	parser.onRawMessage(emptyConnectionId, logonMessage);
 
 	nlohmann::json message;
@@ -100,7 +101,7 @@ TEST_CASE("ShouldParseCancelOrdersCorrectly", "[MessageParsing]")
 		REQUIRE(cancelOrder.clOrdId == 1);
 		return "success";
 	};
-	pex::MessageParser parser{emptyCallback,cancelOrderCallback};
+	pex::MessageParser parser{emptyCallback,cancelOrderCallback, emptySend};
 	parser.onRawMessage(emptyConnectionId, logonMessage);
 
 	nlohmann::json message;

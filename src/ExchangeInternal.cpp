@@ -18,7 +18,8 @@ namespace pex {
 		  }
 		  , messageParser_{
 			  [this](const auto& userId, const auto& nos) { return newOrderSingle(userId, nos); },
-			  [this](const auto& userId, const auto& can) { return cancelOrder(userId, can); }
+			  [this](const auto& userId, const auto& can) { return cancelOrder(userId, can); },
+			  [this](const auto& connection, const auto& message) { return sendMessage(connection, message); }
 		  }
 	{
 	}
@@ -26,8 +27,10 @@ namespace pex {
 	{
 		rooms_.insert({roomId, Room{[this](const Bid& bid, const Ask& ask, const Decimal& size){this->execute(bid, ask, size);}}} );
 	}
-	void ExchangeInternal::execute(const Bid&, const Ask&, const Decimal&)
+	void ExchangeInternal::execute(const Bid& bid, const Ask& ask, const Decimal& fillAmount)
 	{
+		userManager_.executeBid(bid, fillAmount);
+		userManager_.executeAsk(ask, fillAmount);
 	}
 	void ExchangeInternal::addBid(const RoomId& roomId, const Bid& bid)
 	{

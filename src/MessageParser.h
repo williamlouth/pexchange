@@ -17,7 +17,9 @@ namespace pex {
 class MessageParser {
     public:
 	explicit MessageParser(std::function<std::string(const UserId&,const NewOrderSingle&)> newOrderSingle,
-		std::function<std::string(const UserId&, const CancelOrder&)> cancelOrder);
+		std::function<std::string(const UserId&, const CancelOrder&)> cancelOrder,
+		std::function<void(const ConnectionId&, const std::string&)> sendMessage
+		);
 	std::string onRawMessage(ConnectionId connectionId, const std::string& rawMessage);
 	void fullyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& decimal);
 	void partiallyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& decimal);
@@ -30,6 +32,8 @@ private:
 
 	std::function<std::string(const UserId&, const NewOrderSingle&)> newOrderSingle_;
 	std::function<std::string(const UserId&, const CancelOrder&)> cancelOrder_;
+
+	std::function<void(const ConnectionId&, const std::string&)> sendMessage_;
 
 	std::map<ConnectionId, UserId> connections_;
 
