@@ -35,7 +35,7 @@ namespace pex
 	{
 		createOrder(newOrderSingle);
 		//TODO: Run checks on NOS
-		return "Successfully placed order: " + newOrderSingle.clOrdId;
+		return "Successfully placed order: " + std::to_string(newOrderSingle.clOrdId);
 	}
 	std::string User::deleteOrder(const CancelOrder& cancelOrder)
 	{
@@ -58,7 +58,7 @@ namespace pex
 	{
 		if(const auto itr = std::ranges::find_if(bids_, [&bid](const auto& p){return p.second.id == bid.id;}); itr != bids_.end())
 		{
-			if(bid.remains() == 0)
+			if(bid.remains() - fillAmount == 0)
 			{
 				fullyFilled_(bid.user, itr->first, fillAmount);
 				bids_.erase(itr);
@@ -73,10 +73,10 @@ namespace pex
 	{
 		if(const auto itr = std::ranges::find_if(asks_, [&ask](const auto& p){return p.second.id == ask.id;}); itr != asks_.end())
 		{
-			if(ask.remains() == 0)
+			if(ask.remains() - fillAmount == 0)
 			{
 				fullyFilled_(ask.user, itr->first, fillAmount);
-				bids_.erase(itr);
+				asks_.erase(itr);
 			}
 			else
 			{

@@ -23,6 +23,7 @@ class ExchangeInternal {
 	virtual ~ExchangeInternal() = default;
 
 		void addRoom(const RoomId& roomId);
+		void addUser(const UserId& user);
     protected:
 		void execute(const Bid& bid, const Ask& ask, const Decimal& size);
 		void addBid(const RoomId& roomId, const Bid& bid);

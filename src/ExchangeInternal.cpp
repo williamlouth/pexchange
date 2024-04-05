@@ -76,4 +76,8 @@ namespace pex {
 	{
 		return userManager_.cancelOrder(user, cancelOrder);
 	}
+	void ExchangeInternal::addUser(const UserId& user)
+	{
+		userManager_.addUser(user);
+	}
 } // pex

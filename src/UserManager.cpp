@@ -60,4 +60,8 @@ namespace pex
 			user->second.executeAsk(ask, fillAmount);
 		}
 	}
+	void UserManager::addUser(const UserId& user)
+	{
+		users_.insert(std::make_pair(user,User{orderIdGenerator_, addBid_, addAsk_, deleteBid_, deleteAsk_, fullyFilled_, partiallyFilled_}));
+	}
 } // pex

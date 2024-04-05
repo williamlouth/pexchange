@@ -17,10 +17,14 @@ namespace integration {
 
 class IntegrationDsl {
     public:
-    void createUser(const pex::UserId& user);
+    bool createUser(const pex::UserId& user);
+    std::string createOrder(const pex::UserId& user, const pex::RoomId& room, const pex::Decimal& px, const pex::Decimal& sz, const pex::ClOrdId& clOrdId = 0);
     std::string sendMessage(const std::string& message, const pex::UserId& user);
 
+    bool userContainsFullFill(const pex::UserId& user, const pex::ClOrdId& clOrdId, const pex::Decimal& fillAmount);
     bool userMessageContains(const pex::UserId& user, const std::string& message);
+    void addRoom(const pex::RoomId& room);
+
 private:
     IntegrationExchange exchange_;
 

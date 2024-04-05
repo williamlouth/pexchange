@@ -32,6 +32,8 @@ namespace pex {
     	void executeBid(const Bid& bid, const Decimal& fillAmount);
     	void executeAsk(const Ask& ask, const Decimal& fillAmount);
 
+    	void addUser(const UserId& user);
+
     private:
 
 		std::function<void(const RoomId& roomId, const Bid& bid)> addBid_;

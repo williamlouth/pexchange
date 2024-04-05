@@ -35,11 +35,27 @@ namespace pex
 		catch (...)
 		{	return "Unknown error";}
 	}
-	void MessageParser::fullyFilled(const UserId&, const ClOrdId&, const Decimal&)
+	void MessageParser::fullyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& fillAmount)
 	{
+		if(const auto itr = std::ranges::find_if(connections_, [&user](const auto& p){return p.second == user;}); itr != connections_.end())
+		{
+			nlohmann::json message;
+			message["type"] = "FullFill";
+			message["ClOrdId"] = clOrdId;
+			message["FillAmount"] = toString(fillAmount);
+			sendMessage_(itr->first, message.dump());
+		}
 	}
-	void MessageParser::partiallyFilled(const UserId&, const ClOrdId&, const Decimal&)
+	void MessageParser::partiallyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& fillAmount)
 	{
+		if(const auto itr = std::ranges::find_if(connections_, [&user](const auto& p){return p.second == user;}); itr != connections_.end())
+		{
+			nlohmann::json message;
+			message["type"] = "PartialFill";
+			message["ClOrdId"] = clOrdId;
+			message["FillAmount"] = toString(fillAmount);
+			sendMessage_(itr->first, message.dump());
+		}
 	}
 	std::string MessageParser::onJsonMessage(ConnectionId connectionId, const nlohmann::json& message)
 	{

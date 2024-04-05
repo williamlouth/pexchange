@@ -21,8 +21,8 @@ class MessageParser {
 		std::function<void(const ConnectionId&, const std::string&)> sendMessage
 		);
 	std::string onRawMessage(ConnectionId connectionId, const std::string& rawMessage);
-	void fullyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& decimal);
-	void partiallyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& decimal);
+	void fullyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& fillAmount);
+	void partiallyFilled(const UserId& user, const ClOrdId& clOrdId, const Decimal& fillAmount);
 
 private:
 	std::string onJsonMessage(ConnectionId connectionId, const nlohmann::json& message);
