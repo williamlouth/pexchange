@@ -4,6 +4,7 @@ project(pexchange)
 set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_CXX_COMPILER_LAUNCHER /usr/local/bin/recc)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include_directories(external/boost/include)
 add_subdirectory(external)
