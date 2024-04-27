@@ -11,8 +11,8 @@
 #include "Types.h"
 
 namespace pex {
-	class NewOrderSingle;
-	class CancelOrder;
+	struct NewOrderSingle;
+	struct CancelOrder;
 
 class MessageParser {
     public:

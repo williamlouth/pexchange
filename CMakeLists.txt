@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(pexchange)
 
 set(CMAKE_CXX_STANDARD 20)
+find_package(Threads)
 
 set(CMAKE_CXX_COMPILER_LAUNCHER /usr/local/bin/recc)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

@@ -17,4 +17,5 @@ add_library(pexchangeLib STATIC
 )
 
 target_link_libraries(pexchange pexchangeLib)
+target_link_libraries(pexchangeLib ${CMAKE_THREAD_LIBS_INIT})
 target_include_directories(pexchangeLib PUBLIC . ../external/websocketpp ../external/json/include)
